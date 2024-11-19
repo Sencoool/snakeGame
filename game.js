@@ -28,7 +28,7 @@ function drawSnake() {
   snake.forEach((segment) => {
     const snakeElement = createGameElement("div", "snake");
     setPosition(snakeElement, segment);
-    gameBoard.appendChild(snakeElement);
+    gameBoard.appendChild(snakeElement); // adding snakeElement into gameBoard
   });
 }
 
@@ -36,8 +36,8 @@ function drawSnake() {
 
 function createGameElement(tag, className) {
   const element = document.createElement(tag);
-  element.className = className;
-  return element;
+  element.className = className; // name class
+  return element; // return div class='snake'
 }
 
 function setPosition(element, position) {
@@ -119,29 +119,29 @@ function startGame() {
 
 // Key press event listener
 function handleKeyPress(e) {
-  if (
-    (!gameStarted && e.code === "Space") ||
-    (!gameStarted && e.key === "  ")
-  ) {
-    startGame();
-  } else {
-    switch (e.key) {
-      case "ArrowUp":
-        direction = "up";
-        break;
-      case "ArrowDown":
-        direction = "down";
-        break;
-      case "ArrowLeft":
-        direction = "left";
-        break;
-      case "ArrowRight":
-        direction = "right";
-        break;
-    }
+  switch (e.key) {
+    case "ArrowUp":
+      direction = "up";
+      break;
+    case "ArrowDown":
+      direction = "down";
+      break;
+    case "ArrowLeft":
+      direction = "left";
+      break;
+    case "ArrowRight":
+      direction = "right";
+      break;
   }
 }
 
+function handleMousepress(e) {
+  if (!gameStarted) {
+    startGame();
+  }
+}
+
+document.addEventListener("click", handleMousepress);
 document.addEventListener("keydown", handleKeyPress);
 
 function increaseSpeed() {
