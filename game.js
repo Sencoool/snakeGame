@@ -1,10 +1,15 @@
 const gameBoard = document.getElementById("game-board");
+const instructionText = document.getElementById("instruction-text");
+const logo = document.getElementById("logo");
 
 // Game variable
 let gridSize = 20;
 let snake = [{ x: 10, y: 10 }]; // Snake starting position
 let food = generateFood();
 let direction = "right";
+let gameInterval;
+let gameSpeedDelay = 200; // milliseconds
+let gameStarted = false;
 // console.log(gameBoard);
 
 function draw() {
@@ -36,7 +41,7 @@ function setPosition(element, position) {
   element.style.gridRow = position.y;
 }
 
-draw();
+// draw();
 
 // Food
 
@@ -71,10 +76,62 @@ function move() {
 
   snake.unshift(head); // adding new array of snake head pos x,y
 
-  snake.pop(); // remove recently array of snake head pos x,y
+  // snake.pop(); // remove recently array of snake head pos x,y
+
+  // check food collision and generate new food
+
+  if (head.x === food.x && head.y === food.y) {
+    food = generateFood();
+    clearInterval();
+    gameInterval = setInterval(() => {
+      move();
+      draw();
+    }, gameSpeedDelay);
+  } else {
+    snake.pop(); // if not collision with food then remove recently snake
+  }
 }
 
-setInterval(() => {
-  move(); // Move pos first
-  draw(); // Then draw at new pos
-}, 200);
+// Testing game moving
+// setInterval(() => {
+//   move(); // Move pos first
+//   draw(); // Then draw at new pos
+// }, 200);
+
+function startGame() {
+  gameStarted = true;
+  instructionText.style.display = "none";
+  logo.style.display = "none";
+  gameInterval = setInterval(() => {
+    move();
+    // checkCollision();
+    draw();
+  }, gameSpeedDelay);
+}
+
+// Key press event listener
+function handleKeyPress(e) {
+  if (
+    (!gameStarted && e.code === "Space") ||
+    (!gameStarted && e.key === "  ")
+  ) {
+    startGame();
+  } else {
+    switch (e.key) {
+      case "ArrowUp":
+        direction = "up";
+        break;
+      case "ArrowDown":
+        direction = "down";
+        break;
+      case "ArrowLeft":
+        direction = "left";
+        break;
+      case "ArrowRight":
+        direction = "right";
+        break;
+    }
+  }
+}
+
+document.addEventListener("keydown", handleKeyPress);
