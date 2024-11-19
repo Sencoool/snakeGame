@@ -82,10 +82,6 @@ function move() {
 
   snake.unshift(head); // adding new array of snake head pos x,y
 
-  // snake.pop(); // remove recently array of snake head pos x,y
-
-  // check food collision and generate new food
-
   if (head.x === food.x && head.y === food.y) {
     food = generateFood();
     increaseSpeed();
@@ -96,7 +92,7 @@ function move() {
       draw();
     }, gameSpeedDelay);
   } else {
-    snake.pop(); // if not collision with food then remove recently snake
+    snake.pop(); // if not collision with food then remove recently snake pos x,y
   }
 }
 
